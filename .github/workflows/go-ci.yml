@@ -75,5 +75,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Checkout go-movies-common
+        uses: actions/checkout@v4
+        with:
+          repository: charbelhanna96/go-movies-common
+          path: ../go-movies-common
+
       - name: Build Docker image
         run: docker compose build
