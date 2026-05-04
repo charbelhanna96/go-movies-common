@@ -2,10 +2,10 @@ package middleware_test
 
 import (
 	"net/http"
-	"net/http/httptest"
 	"testing"
 
 	"github.com/charbelhanna96/go-movies-common/pkg/middleware"
+	"github.com/charbelhanna96/go-movies-common/pkg/testutil"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -18,9 +18,9 @@ func dummyHandler() http.Handler {
 func TestCORS_AllowedOrigin(t *testing.T) {
 	handler := middleware.CORS([]string{"http://localhost:3000"}, dummyHandler())
 
-	req := httptest.NewRequest("GET", "/", nil)
+	req := testutil.NewRequest("GET", "/", nil)
 	req.Header.Set("Origin", "http://localhost:3000")
-	w := httptest.NewRecorder()
+	w := testutil.NewRecorder()
 
 	handler.ServeHTTP(w, req)
 
@@ -31,9 +31,9 @@ func TestCORS_AllowedOrigin(t *testing.T) {
 func TestCORS_DisallowedOrigin(t *testing.T) {
 	handler := middleware.CORS([]string{"http://localhost:3000"}, dummyHandler())
 
-	req := httptest.NewRequest("GET", "/", nil)
+	req := testutil.NewRequest("GET", "/", nil)
 	req.Header.Set("Origin", "http://evil.com")
-	w := httptest.NewRecorder()
+	w := testutil.NewRecorder()
 
 	handler.ServeHTTP(w, req)
 
@@ -43,9 +43,9 @@ func TestCORS_DisallowedOrigin(t *testing.T) {
 func TestCORS_VaryHeaderAlwaysSet(t *testing.T) {
 	handler := middleware.CORS([]string{"http://localhost:3000"}, dummyHandler())
 
-	req := httptest.NewRequest("GET", "/", nil)
+	req := testutil.NewRequest("GET", "/", nil)
 	req.Header.Set("Origin", "http://evil.com")
-	w := httptest.NewRecorder()
+	w := testutil.NewRecorder()
 
 	handler.ServeHTTP(w, req)
 
@@ -55,9 +55,9 @@ func TestCORS_VaryHeaderAlwaysSet(t *testing.T) {
 func TestCORS_OptionsReturns204(t *testing.T) {
 	handler := middleware.CORS([]string{"http://localhost:3000"}, dummyHandler())
 
-	req := httptest.NewRequest("OPTIONS", "/", nil)
+	req := testutil.NewRequest("OPTIONS", "/", nil)
 	req.Header.Set("Origin", "http://localhost:3000")
-	w := httptest.NewRecorder()
+	w := testutil.NewRecorder()
 
 	handler.ServeHTTP(w, req)
 
@@ -67,8 +67,8 @@ func TestCORS_OptionsReturns204(t *testing.T) {
 func TestCORS_NoOriginHeader(t *testing.T) {
 	handler := middleware.CORS([]string{"http://localhost:3000"}, dummyHandler())
 
-	req := httptest.NewRequest("GET", "/", nil)
-	w := httptest.NewRecorder()
+	req := testutil.NewRequest("GET", "/", nil)
+	w := testutil.NewRecorder()
 
 	handler.ServeHTTP(w, req)
 
@@ -80,9 +80,9 @@ func TestCORS_NoOriginHeader(t *testing.T) {
 func TestCORS_MultipleAllowedOrigins(t *testing.T) {
 	handler := middleware.CORS([]string{"http://localhost:3000", "http://localhost:8081"}, dummyHandler())
 
-	req := httptest.NewRequest("GET", "/", nil)
+	req := testutil.NewRequest("GET", "/", nil)
 	req.Header.Set("Origin", "http://localhost:8081")
-	w := httptest.NewRecorder()
+	w := testutil.NewRecorder()
 
 	handler.ServeHTTP(w, req)
 

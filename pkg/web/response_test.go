@@ -3,16 +3,16 @@ package web_test
 import (
 	"encoding/json"
 	"net/http"
-	"net/http/httptest"
 	"testing"
 
+	"github.com/charbelhanna96/go-movies-common/pkg/testutil"
 	"github.com/charbelhanna96/go-movies-common/pkg/web"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func TestJSON_WritesStatusAndBody(t *testing.T) {
-	w := httptest.NewRecorder()
+	w := testutil.NewRecorder()
 	web.JSON(w, http.StatusOK, map[string]string{"key": "value"})
 
 	assert.Equal(t, http.StatusOK, w.Code)
@@ -24,13 +24,13 @@ func TestJSON_WritesStatusAndBody(t *testing.T) {
 }
 
 func TestJSON_Writes201(t *testing.T) {
-	w := httptest.NewRecorder()
+	w := testutil.NewRecorder()
 	web.JSON(w, http.StatusCreated, map[string]string{"status": "created"})
 	assert.Equal(t, http.StatusCreated, w.Code)
 }
 
 func TestJSON_WritesEmptyArray(t *testing.T) {
-	w := httptest.NewRecorder()
+	w := testutil.NewRecorder()
 	web.JSON(w, http.StatusOK, []string{})
 
 	assert.Equal(t, http.StatusOK, w.Code)
@@ -38,7 +38,7 @@ func TestJSON_WritesEmptyArray(t *testing.T) {
 }
 
 func TestError_WritesMessageAndStatus(t *testing.T) {
-	w := httptest.NewRecorder()
+	w := testutil.NewRecorder()
 	web.Error(w, http.StatusBadRequest, "invalid input")
 
 	assert.Equal(t, http.StatusBadRequest, w.Code)
@@ -49,7 +49,7 @@ func TestError_WritesMessageAndStatus(t *testing.T) {
 }
 
 func TestError_Writes500(t *testing.T) {
-	w := httptest.NewRecorder()
+	w := testutil.NewRecorder()
 	web.Error(w, http.StatusInternalServerError, "internal server error")
 
 	assert.Equal(t, http.StatusInternalServerError, w.Code)
