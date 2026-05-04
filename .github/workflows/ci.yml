@@ -1,0 +1,16 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  ci:
+    uses: charbelhanna96/go-movies-common/.github/workflows/go-ci.yml@main
+    with:
+      unit-test-paths: "./pkg/..."
+      has-docker: false
