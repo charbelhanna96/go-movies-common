@@ -79,7 +79,12 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: charbelhanna96/go-movies-common
-          path: ../go-movies-common
+          path: go-movies-common
+
+      - name: Create sibling directory structure
+        run: |
+          mkdir -p ../go-movies-common
+          cp -r go-movies-common/. ../go-movies-common/
 
       - name: Build Docker image
         run: docker compose build
